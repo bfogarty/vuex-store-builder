@@ -9,7 +9,10 @@ export const requestBuilder = slug =>
 export const receiveBuilder = (slug, getKey) =>
   function(state, data) {
     if (Array.isArray(data)) {
-      data.forEach(datum => (state.byId[getKey(datum)] = datum));
+      state.byId = data.reduce((updatedState, datum) => {
+        updatedState[getKey(datum)] = datum;
+        return updatedState;
+      }, state.byId);
     } else {
       state.byId[getKey(data)] = data;
     }
