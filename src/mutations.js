@@ -9,12 +9,9 @@ export const requestBuilder = slug =>
 export const receiveBuilder = (slug, getKey) =>
   function(state, data) {
     if (Array.isArray(data)) {
-      state.byId = data.reduce((updatedState, datum) => {
-        updatedState[getKey(datum)] = datum;
-        return updatedState;
-      }, state.byId);
+      data.forEach(datum => Vue.set(state.byId, getKey(datum), datum));
     } else {
-      state.byId[getKey(data)] = data;
+      Vue.set(state.byId, getKey(data), data);
     }
     state[loaded(slug)] = true;
   };
